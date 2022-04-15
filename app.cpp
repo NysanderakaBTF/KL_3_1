@@ -112,6 +112,7 @@ int app::exec_app()
 	do {
 		cin >> com;
 		if(com!="END"){
+			p = "";
 			cin >> p;
 			if (com == "SET") {
 				tem = now->find_cord(p);
