@@ -126,3 +126,84 @@ void base::print_ready() {
 		ar_p[i]->print_ready();
 	}
 }
+base* base::find_cord(string path)
+{
+	if (path.size() == 0) return nullptr;
+	if (path[0] == '.') return this;
+	if (path[0] == '/' && path[1] == '/') // find in all tree
+	{
+		base* root = this;
+		while (root->get_head_p() != nullptr) root = root->get_head_p();
+		return root->find_n(path.substr(2, path.size() - 2));
+	}else if (path[0] == '/') {//
+		base* root = this;
+		while (root->get_head_p() != nullptr) root = root->get_head_p();
+		if (path.size() == 1) return root;
+		return root->find_cord(path.substr(1,path.size()-1));
+		//int id = -1, id2 = path.size();
+		//for (int i = 1; i < path.size(); i++) {
+		//	if (path[i] == '/') {
+		//		if (id == -1)
+		//			id = i;
+		//		else {
+		//			id2 = i;
+		//			break;
+		//		}
+		//	}
+		//}
+		////if (id == -1) return this; ??
+		//string next_name = path.substr(id + 1, id2 - id - 1);
+		//for (int i = 0; i < ar_p.size(); i++) {
+		//	if (ar_p[i]->get_name() == next_name) {
+		//		cout < path.substr(id, path.size() - id) << endl;
+		//		return ar_p[i]->find_cord(path.substr(id, path.size() - id));
+		//	}
+		//}
+		//return nullptr;
+	}
+	else {
+		int id = -1, id2 = path.size();
+		for (int i = 0; i < path.size(); i++) {
+			if (path[i] == '/') {
+				if (id == -1)
+					id = i;
+				else {
+					id2 = i;
+					break;
+				}
+			}
+		}
+		//if (id==-1) return this; 
+		//string next_name = path.substr(id + 1, id2 - id - 1);
+		string next_name = path.substr(0, id);
+		for (int i = 0; i < ar_p.size(); i++) {
+			if (ar_p[i]->get_name() == next_name) {
+				if (id == -1) return ar_p[i]->find_cord(".");
+				return ar_p[i]->find_cord(path.substr(id+1, path.size() - id));
+			}
+		}
+		return nullptr;
+	}
+}
+
+//Base* Base::get_by_path(string path) {
+//	if (path[1] == '/') {
+//		return this->get_by_name(path.substr(2, path.size() - 2));
+//	}
+//	int index = -1, index2 = path.size();         for (int i = 1; i < path.size(); ++i) {
+//		if (path[i] == '/') {
+//			if (index == -1)                                 index = i;
+//			else {
+//				index2 = i;                                 break;
+//			}
+//		}
+//	}
+//	if (index == -1)                 return this;
+//	string s2 = path.substr(index + 1, index2 - index - 1);         for (int i = 0; i < this->children.size(); ++i) {
+//		if (this->children[i]->get_name() == s2) {
+//			return this->children[i] -
+//	> get_by_path(path.substr(index, path.size() - index));
+//		}
+//	}
+//	return nullptr;
+//}

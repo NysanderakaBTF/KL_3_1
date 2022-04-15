@@ -22,6 +22,7 @@ public:
 	void set_readiness(int stat);
 	void print();
 	void print_ready();
+	base* find_cord(std::string);
 
 };
 #endif 
