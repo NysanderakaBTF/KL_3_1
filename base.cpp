@@ -142,17 +142,12 @@ base* base::find_cord(string path)
 		return root->find_cord(path.substr(1,path.size()-1));
 	}
 	else {
-		//int id = -1, id2 = path.size();
 		int id = -1;
 		for (int i = 0; i < path.size(); i++) {
 			if (path[i] == '/') {
 				if (id == -1)
 					id = i;
-				//else {
-				//	id2 = i;
-				//	break;
-				//}
-				else
+				else 
 					break;
 			}
 		}

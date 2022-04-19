@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-app::app(base_c2* p) :base(p, "root")
+app::app(base_c2* p) :base(p, "")
 {
 }
 
@@ -12,7 +12,9 @@ void app::build_tree_objects()
 	std::string n_a, n_b;
 	int class_n;
 	std::cin >> n_a;
+	if(n_a !="endtree"){
 	this->set_name(n_a);
+	
 	do {
 		std::cin >> n_a;
 
@@ -20,8 +22,10 @@ void app::build_tree_objects()
 			cin >> n_b >> class_n;
 			base* to_push = find_cord(n_a);
 			if (to_push == nullptr) {
-				cout << "The head object " << n_a << " is not found"<<endl;
-				print();
+				if(name!="" ){
+					print();
+					cout<<endl<<"The head object "<<n_a<<" is not found";
+				}
 				exit(0);
 			}
 			switch (class_n)
@@ -46,14 +50,16 @@ void app::build_tree_objects()
 			}
 		}
 	} while (n_a != "endtree");
+	}
 }
 
 int app::exec_app()
 {
 	cout << "Object tree" << endl;
+	if(this->name!=""){
+
 	print();
-	std::string com="", p;
-	int n;
+	std::string com="", p="";
 	base* now = this;
 	base* tem = nullptr;
 	do {
@@ -68,7 +74,7 @@ int app::exec_app()
 				}
 				else {
 					now = tem;
-					cout << endl << "Object is set : " << now->get_name();
+					cout << endl << "Object is set: " << now->get_name();
 				}
 			}
 			if (com == "FIND") {
@@ -82,6 +88,7 @@ int app::exec_app()
 			}
 		}
 	} while (com != "END");
+	}
 	return 0;
 }
 
