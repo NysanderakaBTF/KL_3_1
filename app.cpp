@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-app::app(base_c2* p) :base(p, "")
+app::app(base_c2* p) :base(p, "root")
 {
 }
 
@@ -22,10 +22,9 @@ void app::build_tree_objects()
 			cin >> n_b >> class_n;
 			base* to_push = find_cord(n_a);
 			if (to_push == nullptr) {
-				if(name!="" ){
-					print();
-					cout<<endl<<"The head object "<<n_a<<" is not found";
-				}
+				cout<<"The head object "<<n_a<<" is not found"<<endl;
+				cout<<"Object tree"<<endl;
+				print();
 				exit(0);
 			}
 			switch (class_n)
@@ -51,6 +50,14 @@ void app::build_tree_objects()
 		}
 	} while (n_a != "endtree");
 	}
+	cin >> n_a;
+	while (n_a != "end_of_connections") {
+		cin >> n_b;
+		base* from = find_cord(n_a);
+		base* to = find_cord(n_b);
+		from->set_connection(SIGNAL(from), to, HANDLER(to));
+		cin >> n_a;
+	}
 }
 
 int app::exec_app()
@@ -62,6 +69,11 @@ int app::exec_app()
 	std::string com="", p="";
 	base* now = this;
 	base* tem = nullptr;
+	now->set_readiness(1);
+	for (int i = 0; i < ar_p.size(); i++) {
+		
+	}
+
 	do {
 		cin >> com;
 		if(com!="END"){

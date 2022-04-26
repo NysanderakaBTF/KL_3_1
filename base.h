@@ -2,6 +2,12 @@
 #define BASE_H
 #include <string>
 #include <vector>
+
+class base;
+typedef void (*signal)(std::string&);
+typedef void (*handler)(base*, std::string& s);
+#define SIGNAL(_signal) ((signal) (&_signal))
+#define HANDLER(_handler) ((handler) (&_handler))
 class base
 {
 protected:
@@ -9,6 +15,12 @@ protected:
 	base* head;
 	std::vector<base*> ar_p;
 	int status;
+	struct connections {
+		base* bas;
+		signal sig;
+		handler hand;
+	};
+	std::vector<connections> con;
 public:
 
 	base(base*, std::string = "Def_name");
@@ -23,6 +35,10 @@ public:
 	void print();
 	void print_ready();
 	base* find_cord(std::string="");
+	std::string get_abs_cord();
+	void set_connection(signal, base*, handler);
+	void del_connection(signal,  base*, handler);
+	void emit_signal(signal, std::string);
 
 };
 #endif 
