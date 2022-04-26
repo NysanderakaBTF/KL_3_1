@@ -169,7 +169,7 @@ string base::get_abs_cord()
 	return q.size()==0 ? "/" : q;
 }
 
-void base::set_connection(signal s , base* b , handler h)
+void base::set_connection(signal& s , base* b , handler& h)
 {
 	for (auto it = con.begin(); it != con.end(); it++) { // if trying to connect to itself
 		if (it->sig == s && it->hand == h && it->bas == b) {
@@ -180,7 +180,7 @@ void base::set_connection(signal s , base* b , handler h)
 	con.push_back(c);
 }
 
-void base::del_connection(signal s, base* b, handler h)
+void base::del_connection(signal& s, base* b, handler& h)
 {
 	for (auto it = con.begin(); it != con.end(); it++) {
 		if (it->sig == s && it->hand == h && it->bas == b) {
@@ -190,13 +190,21 @@ void base::del_connection(signal s, base* b, handler h)
 	}
 }
 
-void base::emit_signal(signal s, string mm)
+void base::emit_signal(signal& s, string& mm)
 {
 	for (auto  c : con) {
-		if (con.empty()) return;
 		if (c.sig == s) {
 			c.hand(c.bas, this->name);
 			s(mm);
 		}
+	}
+}
+
+void base::set_ready_all()
+{
+	this->set_readiness(1);
+	for (auto i : ar_p) {
+		i->set_readiness(1);
+		i->set_ready_all();
 	}
 }

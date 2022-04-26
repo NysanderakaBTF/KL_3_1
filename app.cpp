@@ -1,6 +1,11 @@
 #include "app.h"
 #include <iostream>
 #include <string>
+#include"base_c2.h"
+#include"base_c3.h"
+#include"base_c4.h"
+#include"base_c5.h"
+#include"base_c6.h"
 using namespace std;
 app::app(base_c2* p) :base(p, "root")
 {
@@ -55,7 +60,7 @@ void app::build_tree_objects()
 		cin >> n_b;
 		base* from = find_cord(n_a);
 		base* to = find_cord(n_b);
-		from->set_connection(SIGNAL(from), to, HANDLER(to));
+		from->set_connection(SIGNALL(from), to, HANDLERR(to));
 		cin >> n_a;
 	}
 }
@@ -63,44 +68,36 @@ void app::build_tree_objects()
 int app::exec_app()
 {
 	cout << "Object tree" << endl;
-	if(this->name!=""){
-
 	print();
-	std::string com="", p="";
+	std::string com, p,mes;
 	base* now = this;
 	base* tem = nullptr;
-	now->set_readiness(1);
-	for (int i = 0; i < ar_p.size(); i++) {
-		
-	}
-
-	do {
+	this->set_ready_all();
+	do{
 		cin >> com;
-		if(com!="END"){
-			p = "";
-			cin >> p;
-			if (com == "SET") {
-				tem = now->find_cord(p);
-				if (tem == nullptr) {
-					cout <<endl<< "Object is not found: " << now->get_name() <<" "<< p;
-				}
-				else {
-					now = tem;
-					cout << endl << "Object is set: " << now->get_name();
-				}
+		if (com != "END") {
+			cin >> p >> mes;
+			if (com == "EMIT") {
+				tem = find_cord(p);
+				tem->emit_signal(SIGNALL(tem), mes);
 			}
-			if (com == "FIND") {
-				tem = now->find_cord(p);
-				if (tem == nullptr) {
-					cout << endl << p<<"     Object is not found";
-				}
-				else {
-					cout << endl << p << "     Object name: " << tem->get_name();
-				}
+			else if (com == "SET_CONNECT") {
+				now = find_cord(p);
+				tem = find_cord(mes);
+				now->set_connection(SIGNALL(now), tem, HANDLERR(tem));
+			}
+			else if (com == "DELETE_CONNECT") {
+				now = find_cord(p);
+				tem = find_cord(mes);
+				now->del_connection(SIGNALL(now), tem, HANDLERR(tem));
+			}
+			else if (com == "SET_CONDITION") {
+				now = find_cord(p);
+				now->set_readiness(stoi(mes, nullptr, 10));
 			}
 		}
-	} while (com != "END");
-	}
+	}while (com != "END");
+
 	return 0;
 }
 

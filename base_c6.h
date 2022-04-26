@@ -6,8 +6,8 @@ class base_c6 :
 {
 public:
 	base_c6(base*, std::string = "Default_name");
-	void signal(std::string&);
-	void handler(base*, std::string&);
+	void ssignal(std::string&);
+	void shandler(base*, std::string&);
 };
 #endif
 
