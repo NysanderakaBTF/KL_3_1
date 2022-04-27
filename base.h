@@ -39,9 +39,9 @@ public:
 	//void set_connection(signal&, base*, handler&);
 	//void del_connection(signal&,  base*, handler&);
 	//void emit_signal(signal&, std::string&);
-	void set_connection(signal&, base*, handler&);
-	void del_connection(signal&,  base*, handler&);
-	void emit_signal(signal&, std::string&);
+	void set_connection(signal, base*, handler);
+	void del_connection(signal,  base*, handler);
+	void emit_signal(signal, std::string&);
 	void set_ready_all();
 
 };
