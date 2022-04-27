@@ -68,7 +68,7 @@ base* base::find_n(std::string n)
 {
 	if (this->name == n)
 		return this;
-	base* res=nullptr;
+	base* res = nullptr;
 	for (int i = 0; i < ar_p.size(); i++) {
 		res = ar_p[i]->find_n(n);
 		if (res != nullptr) {
@@ -80,7 +80,7 @@ base* base::find_n(std::string n)
 
 void base::set_readiness(int stat)
 {
-	if (head==nullptr || head->status!=0) {
+	if (head == nullptr || head->status != 0) {
 		if (stat != 0)
 			status = stat;
 		else {
@@ -102,16 +102,16 @@ void base::print() {
 		string tabs = "";
 		while (now->get_head_p() != nullptr) {
 			now = now->get_head_p();
-			tabs =tabs+ " " + " " + " " + " ";
+			tabs = tabs + " " + " " + " " + " ";
 		}
-		cout << endl<<tabs << ar_p[i]->get_name();
+		cout << endl << tabs << ar_p[i]->get_name();
 		ar_p[i]->print();
 	}
 }
 void base::print_ready() {
 	if (this->get_head_p() == nullptr) {
 		if (this->status != 0) cout << name << " is ready";
-			else cout << name << " is not ready";
+		else cout << name << " is not ready";
 	}
 	for (int i = 0; i < ar_p.size(); i++) {
 		base* now = ar_p[i];
@@ -124,5 +124,87 @@ void base::print_ready() {
 		if (ar_p[i]->status != 0) cout << " is ready";
 		else cout << " is not ready";
 		ar_p[i]->print_ready();
+	}
+}
+base* base::find_cord(string path) {
+	if (path.empty()) return nullptr;
+	if (path[0] == '.') return this;
+	base* root = this;
+	if (path[0] == '/') {
+		while (root->get_head_p() != nullptr) root = root->get_head_p();
+	}
+	if (path.size() > 1 && path[0] == '/' && path[1] == '/') {
+		path.erase(0, 2);
+		return root->find_n(path);
+	}
+	else if (path[0] == '/') {
+		if (path.size() == 1) return root;
+		path.erase(0, 1);
+	}
+	int id = path.find('/');
+	string ss = path.substr(0, id == -1 ? path.size() : id);
+	for (int i = 0; i < root->ar_p.size(); i++) {
+		base* qq = root->ar_p[i];
+		if (qq->get_name() == ss) {
+			if (id == -1) {
+				return qq;
+			}
+			else {
+				path.erase(0, id + 1);
+				return qq->find_cord(path);
+			}
+		}
+	}
+	return nullptr;
+}
+
+string base::get_abs_cord()
+{
+	string q = "";
+	base* t = this;
+	while (t->get_head_p() != nullptr) {
+		q = "/" + t->get_name();
+		t = t->get_head_p();
+	}
+	return q.size()==0 ? "/" : q;
+}
+
+void base::set_connection(signal& s , base* b , handler& h)
+{
+	for (auto it = con.begin(); it != con.end(); it++) { // if trying to connect to itself
+		if (it->sig == s && it->hand == h && it->bas == b) {
+			return;
+		}
+	}
+	connections c = { b, s, h };
+	con.push_back(c);
+}
+
+void base::del_connection(signal& s, base* b, handler& h)
+{
+	for (auto it = con.begin(); it != con.end(); it++) {
+		if (it->sig == s && it->hand == h && it->bas == b) {
+			con.erase(it);
+			return;
+		}
+	}
+}
+
+void base::emit_signal(signal& s, string& mm)
+{
+	for (auto  c : con) {
+		if (c.sig == s) {
+			c.hand(c.bas, this->name);
+			s(mm);
+		}
+	}
+}
+
+void base::set_ready_all()
+{
+	this->set_readiness(1);
+	for (auto i : ar_p) {
+		i->set_readiness(1);
+		i->set_ready_all();
 	}
 }
