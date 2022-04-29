@@ -231,11 +231,9 @@ void base::del_connection(Tsignal s, base* b, Thandler h)
 void base::emit_signal(Tsignal s, string& mm)
 {
 	for (int i = 0; i < con.size(); i++) {
-		if ((*con[i]).sig == s) {
-			(*con[i]).hand(this->con[i].bas, this->name);
-			//(*s)(mm);
-			this->con[i].sig(mm);
-			//(s)=(signal*)SIGNALL(mm);
+		if (con[i]->sig == s) {
+			con[i]->hand=Thandler(con[i]->bas, this->name);
+			s(mm);
 		}
 	}
 }
