@@ -4,10 +4,13 @@
 #include <vector>
 
 class base;
-typedef void (*signal)(std::string&);
-typedef void (*handler)(base*, std::string& s);
-#define SIGNALL(_signal) ((signal) (&_signal))
-#define HANDLERR(_handler) ((handler) (&_handler))
+typedef void (base::*Tsignal)(std::string&);
+typedef void (base::*Thandler)(base*, std::string& s);
+#define SIGNALL(_signal) ((Tsignal) (&_signal))
+#define HANDLERR(_handler) ((Thandler) (&_handler))
+//#define SIGNALL(void(*a)(std::string)) ((signal) (&void))
+//#define HANDLERR(_handler) ((handler) (&_handler))
+using namespace std;
 class base
 {
 protected:
@@ -15,17 +18,12 @@ protected:
 	base* head;
 	std::vector<base*> ar_p;
 	int status;
-	//struct connections {
-	//	base* bas;
-	//	signal sig;
-	//	handler hand;
-	//};
 	struct connections {
 		base* bas;
-		signal sig;
-		handler hand;
+		Tsignal sig;
+		Thandler hand;
 	};
-	std::vector<connections> con;
+	std::vector<connections*> con;
 public:
 
 	base(base*, std::string = "Def_name");
@@ -41,12 +39,12 @@ public:
 	void print_ready();
 	base* find_cord(std::string="");
 	std::string get_abs_cord();
-	void set_connection(signal*, base*, handler*);
-	void del_connection(signal*,  base*, handler*);
-	void emit_signal(signal*, std::string&);
-	//void set_connection(signal, base*, handler);
-	//void del_connection(signal,  base*, handler);
-	//void emit_signal(signal, std::string&);
+	//void set_connection(signal*, base*, handler*);
+	//void del_connection(signal*,  base*, handler*);
+	//void emit_signal(signal*, std::string&);
+	void set_connection(Tsignal, base*, Thandler);
+	void del_connection(Tsignal,  base*, Thandler);
+	void emit_signal(Tsignal, std::string&);
 	void set_ready_all();
 
 };

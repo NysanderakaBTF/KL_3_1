@@ -60,7 +60,10 @@ void app::build_tree_objects()
 		cin >> n_b;
 		base* from = find_cord(n_a);
 		base* to = find_cord(n_b);
-		from->set_connection((signal*)SIGNALL(from), to, (handler*)HANDLERR(to));
+		//from->set_connection((signal*)SIGNALL(from), to, (handler*)HANDLERR(to));
+		//from->set_connection(SIGNALL(from), to, HANDLERR(to));
+		//from->set_connection(SIGNALL(base_c2::signal), to, HANDLERR(base_c2::handler));
+		from->set_connection((SIGNALL(base_c2::signal)), to, HANDLERR(base_c2::handler));
 		cin >> n_a;
 	}
 }
@@ -80,16 +83,19 @@ int app::exec_app()
 			if (com == "EMIT") {
 				tem = find_cord(p);
 				tem->emit_signal((signal*)SIGNALL(tem), mes);
+				//tem->emit_signal(SIGNALL(tem), mes);
 			}
 			else if (com == "SET_CONNECT") {
 				now = find_cord(p);
 				tem = find_cord(mes);
 				now->set_connection((signal*)SIGNALL(now), tem, (handler*)HANDLERR(tem));
+				//now->set_connection(SIGNALL(now), tem, HANDLERR(tem));
 			}
 			else if (com == "DELETE_CONNECT") {
 				now = find_cord(p);
 				tem = find_cord(mes);
 				now->del_connection((signal*)SIGNALL(now), tem, (handler*)HANDLERR(tem));
+				//now->del_connection(SIGNALL(now), tem, HANDLERR(tem));
 			}
 			else if (com == "SET_CONDITION") {
 				now = find_cord(p);
