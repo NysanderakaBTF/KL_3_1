@@ -70,6 +70,8 @@ void app::build_tree_objects()
 
 int app::exec_app()
 {
+	Tsignal sigs[] = {SIGNALL(base_c2::signal), SIGNALL(base_c3::signal),SIGNALL(base_c4::signal),SIGNALL(base_c5::signal),SIGNALL(base_c6::signal) };
+	Thandler hans[] = {HANDLERR(base_c2::handler),HANDLERR(base_c3::handler), HANDLERR(base_c4::handler), HANDLERR(base_c5::handler), HANDLERR(base_c6::handler) };
 	cout << "Object tree" << endl;
 	print();
 	std::string com, p,mes;
@@ -80,21 +82,24 @@ int app::exec_app()
 		cin >> com;
 		if (com != "END") {
 			cin >> p >> mes;
-			if (com == "EMIT") {
+			if (com == "EMIT") {// для каждого вызова нужно определить класс и вызывать именно его методы
 				tem = find_cord(p);
-				tem->emit_signal((signal*)SIGNALL(tem), mes);
+				tem->emit_signal(&sigs[tem->get_n_class()-2], mes);
+				//tem->emit_signal((signal*)SIGNALL(tem), mes);
 				//tem->emit_signal(SIGNALL(tem), mes);
 			}
 			else if (com == "SET_CONNECT") {
 				now = find_cord(p);
 				tem = find_cord(mes);
-				now->set_connection((signal*)SIGNALL(now), tem, (handler*)HANDLERR(tem));
+				now->set_connection(&sigs[tem->get_n_class() - 2],tem, &hans[tem->get_n_class()-2]);
+				//now->set_connection((signal*)SIGNALL(now), tem, (handler*)HANDLERR(tem));
 				//now->set_connection(SIGNALL(now), tem, HANDLERR(tem));
 			}
 			else if (com == "DELETE_CONNECT") {
 				now = find_cord(p);
 				tem = find_cord(mes);
-				now->del_connection((signal*)SIGNALL(now), tem, (handler*)HANDLERR(tem));
+				now->del_connection(&sigs[tem->get_n_class() - 2], (base_c2*)tem, &hans[tem->get_n_class() - 2]);
+				//now->del_connection((signal*)SIGNALL(now), tem, (handler*)HANDLERR(tem));
 				//now->del_connection(SIGNALL(now), tem, HANDLERR(tem));
 			}
 			else if (com == "SET_CONDITION") {

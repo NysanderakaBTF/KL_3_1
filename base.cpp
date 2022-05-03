@@ -163,50 +163,15 @@ string base::get_abs_cord()
 	string q = "";
 	base* t = this;
 	while (t->get_head_p() != nullptr) {
-		q = "/" + t->get_name();
+		q = "/" + t->get_name()+q;
 		t = t->get_head_p();
 	}
 	return q.size()==0 ? "/" : q;
 }
-
-//void base::set_connection(Tsignal* s , base* b , handler* h)
-//{
-//	if (con.empty()) con.resize(0);
-//	for (auto it = con.begin(); it != con.end(); it++) { // if trying to connect to itself
-//		if (it->sig == *s && it->hand == *h && it->bas == b) {
-//			return;
-//		}
-//	}
-//	//connections c = { b, *s, *h };
-//	con.push_back(connections{ b,*s,*h });
-//}
-//
-//void base::del_connection(signal* s, base* b, handler* h)
-//{
-//	for (auto it = con.begin(); it != con.end(); it++) {
-//		if (it->sig == *s && it->hand == *h && it->bas == b) {
-//			con.erase(it);
-//			return;
-//		}
-//	}
-//}
-//
-//void base::emit_signal(signal* s, string &mm)
-//{
-//	//for (auto  c : con) {
-//	for(int i=0;i<this->con.size();i++){
-//		if (this->con[i].sig == *s) {
-//			this->con[i].hand(this->con[i].bas, this->name);
-//			//(*s)(mm);
-//			this->con[i].sig(mm);
-//			//(s)=(signal*)SIGNALL(mm);
-//		}
-//	}
-//}
-void base::set_connection(Tsignal s, base* b, Thandler h)
+void base::set_connection(Tsignal* s, base* b, Thandler* h)
 {
 	connections* nc;
-	for (int i = 0; i < con.size();i++) { // if trying to connect to itself
+	for (int i = 0; i < con.size();i++) { // нам не нужны повтор€ющиес€ св€зи
 		if (con[i]->sig == s && con[i]->hand == h && con[i]->bas == b) {
 			return;
 		}
@@ -218,7 +183,7 @@ void base::set_connection(Tsignal s, base* b, Thandler h)
 	con.push_back(nc);
 }
 
-void base::del_connection(Tsignal s, base* b, Thandler h)
+void base::del_connection(Tsignal* s, base* b, Thandler* h)
 {
 	for (int i = 0; i < con.size(); i++) {
 		if (con[i]->sig == s && con[i]->hand == h && con[i]->bas == b) {
@@ -228,12 +193,14 @@ void base::del_connection(Tsignal s, base* b, Thandler h)
 	}
 }
 
-void base::emit_signal(Tsignal s, string& mm)
-{
+void base::emit_signal(Tsignal* s, string& mm)//какой сигнал нужно выдать
+{	
+	//(*s)(mm);
+	(this->*(*s))(mm);
 	for (int i = 0; i < con.size(); i++) {
 		if (con[i]->sig == s) {
-			con[i]->hand=Thandler(con[i]->bas, this->name);
-			s(mm);
+			//(con[i]->bas->*(con[i]->hand))(this->name);
+			(con[i]->bas->*(*con[i]->hand))(this->name);
 		}
 	}
 }
@@ -245,4 +212,9 @@ void base::set_ready_all()
 		i->set_readiness(1);
 		i->set_ready_all();
 	}
+}
+
+int base::get_n_class()
+{
+	return n_class;
 }

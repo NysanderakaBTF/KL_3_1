@@ -5,7 +5,7 @@
 
 class base;
 typedef void (base::*Tsignal)(std::string&);
-typedef void (base::*Thandler)(base*, std::string& s);
+typedef void (base::*Thandler)(std::string& s);
 #define SIGNALL(_signal) ((Tsignal) (&_signal))
 #define HANDLERR(_handler) ((Thandler) (&_handler))
 //#define SIGNALL(void(*a)(std::string)) ((signal) (&void))
@@ -18,10 +18,11 @@ protected:
 	base* head;
 	std::vector<base*> ar_p;
 	int status;
+	int n_class;
 	struct connections {
-		base* bas;
-		Tsignal sig;
-		Thandler hand;
+		base* bas; // с каким объектом связан
+		Tsignal* sig; // какой сигнал у нашего вызывается
+		Thandler* hand; // каком обработчиком второго объекта обрабатывается
 	};
 	std::vector<connections*> con;
 public:
@@ -39,13 +40,13 @@ public:
 	void print_ready();
 	base* find_cord(std::string="");
 	std::string get_abs_cord();
-	//void set_connection(signal*, base*, handler*);
-	//void del_connection(signal*,  base*, handler*);
-	//void emit_signal(signal*, std::string&);
-	void set_connection(Tsignal, base*, Thandler);
-	void del_connection(Tsignal,  base*, Thandler);
-	void emit_signal(Tsignal, std::string&);
+	//void set_connection(signal, base*, handler);
+	//void del_connection(signal,  base*, handler);
+	//void emit_signal(signal, std::string&);
+	void set_connection(Tsignal*, base*, Thandler*);
+	void del_connection(Tsignal*,  base*, Thandler*);
+	void emit_signal(Tsignal*, std::string&);
 	void set_ready_all();
-
+	int get_n_class();
 };
 #endif 
