@@ -58,11 +58,12 @@ void app::build_tree_objects()
 	}
 	cin >> n_a;
 	Tsignal sigs[] = {SIGNALL(app::signal), SIGNALL(base_c2::signal),
-					SIGNALL(base_c3::signal),SIGNALL(base_c4::signal),
-					SIGNALL(base_c5::signal),SIGNALL(base_c6::signal) };
+					  SIGNALL(base_c3::signal),SIGNALL(base_c4::signal),
+					  SIGNALL(base_c5::signal),SIGNALL(base_c6::signal) };
+
 	Thandler hans[] = {HANDLERR(app::handler), HANDLERR(base_c2::handler),
-					HANDLERR(base_c3::handler), HANDLERR(base_c4::handler),
-					HANDLERR(base_c5::handler), HANDLERR(base_c6::handler) };
+					   HANDLERR(base_c3::handler), HANDLERR(base_c4::handler),
+					   HANDLERR(base_c5::handler), HANDLERR(base_c6::handler) };
 	while (n_a != "end_of_connections") {
 		cin >> n_b;
 		base* from = find_cord(n_a);
@@ -89,12 +90,14 @@ int app::exec_app()
 	Tsignal sigs[] = { SIGNALL(app::signal), SIGNALL(base_c2::signal),
 					SIGNALL(base_c3::signal),SIGNALL(base_c4::signal),
 					SIGNALL(base_c5::signal),SIGNALL(base_c6::signal) };
+
 	Thandler hans[] = { HANDLERR(app::handler), HANDLERR(base_c2::handler),
 					HANDLERR(base_c3::handler), HANDLERR(base_c4::handler),
 					HANDLERR(base_c5::handler), HANDLERR(base_c6::handler) };
 	cout << "Object tree" << endl;
 	print();
 	std::string com, p,mes;
+	int re;
 	base* now = this;
 	base* tem = nullptr;
 	this->set_ready_all();
@@ -109,8 +112,6 @@ int app::exec_app()
 					tem->emit_signal(sigs[tem->get_n_class() - 1], mes);
 				else
 					cout << endl << "Object " << p << " not found";
-				//tem->emit_signal((signal*)SIGNALL(tem), mes);
-				//tem->emit_signal(SIGNALL(tem), mes);
 			}
 			else if (com == "SET_CONNECT") {
 				cin >> mes;
@@ -122,8 +123,6 @@ int app::exec_app()
 					cout << endl << "Handler object " << mes << " not found";
 				if(tem!=nullptr && now!=nullptr)
 					now->set_connection(sigs[now->get_n_class() - 1],tem, hans[tem->get_n_class()-1]);
-				//now->set_connection((signal*)SIGNALL(now), tem, (handler*)HANDLERR(tem));
-				//now->set_connection(SIGNALL(now), tem, HANDLERR(tem));
 			}
 			else if (com == "DELETE_CONNECT") {
 				cin >> mes;
@@ -135,14 +134,12 @@ int app::exec_app()
 					cout << endl << "Handler object " << mes << " not found";
 				if (tem != nullptr && now != nullptr)
 				now->del_connection(sigs[now->get_n_class() - 1], tem, hans[tem->get_n_class() - 1]);
-				//now->del_connection((signal*)SIGNALL(now), tem, (handler*)HANDLERR(tem));
-				//now->del_connection(SIGNALL(now), tem, HANDLERR(tem));
 			}
 			else if (com == "SET_CONDITION") {
-				cin >> mes;
+				cin >> re;
 				now = find_cord(p);
 				if(now != nullptr)
-					now->set_readiness(stoi(mes, nullptr, 10));
+					now->set_readiness(re);
 				else 
 					cout << endl << "Object " << p << " not found";
 			}

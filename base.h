@@ -38,9 +38,6 @@ public:
 	void print_ready();
 	base* find_cord(std::string="");
 	std::string get_abs_cord();
-	//void set_connection(signal, base*, handler);
-	//void del_connection(signal,  base*, handler);
-	//void emit_signal(signal, std::string&);
 	void set_connection(Tsignal, base*, Thandler);
 	void del_connection(Tsignal,  base*, Thandler);
 	void emit_signal(Tsignal, std::string&);

@@ -194,14 +194,10 @@ void base::del_connection(Tsignal s, base* b, Thandler h)
 
 void base::emit_signal(Tsignal s, string& mm)//какой сигнал нужно выдать
 {	
-	//(*s)(mm);
-	//(this->*(*s))(mm);
 	if (this->status) {
 		(this->*(s))(mm);
 		for (int i = 0; i < con.size(); i++) {
-			if (con[i].sig == s) {
-				//(con[i]->bas->*(con[i]->hand))(this->name);
-				//(con[i].bas->*(con[i].hand))(this->name);
+			if (con[i].sig == s && con[i].bas->status != 0) {
 				(con[i].bas->*(con[i].hand))(mm);
 			}
 		}
@@ -211,9 +207,9 @@ void base::emit_signal(Tsignal s, string& mm)//какой сигнал нужно выдать
 void base::set_ready_all()
 {
 	this->set_readiness(1);
-	for (auto i : ar_p) {
-		i->set_readiness(1);
-		i->set_ready_all();
+	for (int i = 0; i < ar_p.size(); i++) {
+		ar_p[i]->set_readiness(1);
+		ar_p[i]->set_ready_all();
 	}
 }
 
