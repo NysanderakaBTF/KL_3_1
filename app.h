@@ -10,8 +10,10 @@
 class app : public base
 {
 public:
-	app(base_c2* p);
+	app(base* p);
 	void build_tree_objects();
 	int exec_app();
+	void signal(std::string&);
+	void handler(std::string&);
 };
 #endif

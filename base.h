@@ -5,6 +5,7 @@
 
 class base;
 typedef void (base::*Tsignal)(std::string&);
+//typedef void (base::*Thandler)(std::string& s);
 typedef void (base::*Thandler)(std::string& s);
 #define SIGNALL(_signal) ((Tsignal) (&_signal))
 #define HANDLERR(_handler) ((Thandler) (&_handler))
@@ -21,10 +22,10 @@ protected:
 	int n_class;
 	struct connections {
 		base* bas; // с каким объектом связан
-		Tsignal* sig; // какой сигнал у нашего вызывается
-		Thandler* hand; // каком обработчиком второго объекта обрабатывается
+		Tsignal sig; // какой сигнал у нашего вызывается
+		Thandler hand; // каком обработчиком второго объекта обрабатывается
 	};
-	std::vector<connections*> con;
+	std::vector<connections> con;
 public:
 
 	base(base*, std::string = "Def_name");
@@ -43,9 +44,9 @@ public:
 	//void set_connection(signal, base*, handler);
 	//void del_connection(signal,  base*, handler);
 	//void emit_signal(signal, std::string&);
-	void set_connection(Tsignal*, base*, Thandler*);
-	void del_connection(Tsignal*,  base*, Thandler*);
-	void emit_signal(Tsignal*, std::string&);
+	void set_connection(Tsignal, base*, Thandler);
+	void del_connection(Tsignal,  base*, Thandler);
+	void emit_signal(Tsignal, std::string&);
 	void set_ready_all();
 	int get_n_class();
 };

@@ -9,8 +9,8 @@ void base_c5::signal(std::string& mes)
 		mes += " (class: 5)";
 	}
 }
-void base_c5::handler(base* b, std::string& mes)
+void base_c5::handler(std::string& mes)
 {
 	if (status)
-	cout << endl << "Signal to " << b->get_abs_cord() << " Text: " << mes;
+	cout << endl << "Signal to " << get_abs_cord() << " Text: " << mes;
 }

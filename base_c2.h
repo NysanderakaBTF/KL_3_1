@@ -7,7 +7,7 @@ class base_c2 :
 public:
 	base_c2(base*, std::string = "Default_name");
 	void signal(std::string&);
-	void handler(base*, std::string&);
+	void handler(std::string&);
 };
 #endif
 

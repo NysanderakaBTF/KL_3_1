@@ -168,39 +168,42 @@ string base::get_abs_cord()
 	}
 	return q.size()==0 ? "/" : q;
 }
-void base::set_connection(Tsignal* s, base* b, Thandler* h)
+void base::set_connection(Tsignal s, base* b, Thandler h)
 {
-	connections* nc;
+	connections nc;
 	for (int i = 0; i < con.size();i++) { // нам не нужны повтор€ющиес€ св€зи
-		if (con[i]->sig == s && con[i]->hand == h && con[i]->bas == b) {
+		if (con[i].sig == s && con[i].hand == h && con[i].bas == b) {
 			return;
 		}
 	}
-	nc = new connections();
-	nc->bas = b;
-	nc->hand = h;
-	nc->sig = s;
+	nc.bas = b;
+	nc.hand = h;
+	nc.sig = s;
 	con.push_back(nc);
 }
 
-void base::del_connection(Tsignal* s, base* b, Thandler* h)
+void base::del_connection(Tsignal s, base* b, Thandler h)
 {
 	for (int i = 0; i < con.size(); i++) {
-		if (con[i]->sig == s && con[i]->hand == h && con[i]->bas == b) {
+		if (con[i].sig == s && con[i].hand == h && con[i].bas == b) {
 			con.erase(con.begin()+i);
 			return;
 		}
 	}
 }
 
-void base::emit_signal(Tsignal* s, string& mm)//какой сигнал нужно выдать
+void base::emit_signal(Tsignal s, string& mm)//какой сигнал нужно выдать
 {	
 	//(*s)(mm);
-	(this->*(*s))(mm);
-	for (int i = 0; i < con.size(); i++) {
-		if (con[i]->sig == s) {
-			//(con[i]->bas->*(con[i]->hand))(this->name);
-			(con[i]->bas->*(*con[i]->hand))(this->name);
+	//(this->*(*s))(mm);
+	if (this->status) {
+		(this->*(s))(mm);
+		for (int i = 0; i < con.size(); i++) {
+			if (con[i].sig == s) {
+				//(con[i]->bas->*(con[i]->hand))(this->name);
+				//(con[i].bas->*(con[i].hand))(this->name);
+				(con[i].bas->*(con[i].hand))(mm);
+			}
 		}
 	}
 }
