@@ -14,6 +14,6 @@ public:
 	void build_tree_objects();
 	int exec_app();
 	void signal(std::string&);
-	void handler(std::string&);
+	void handler(const std::string&);
 };
 #endif

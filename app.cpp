@@ -57,16 +57,16 @@ void app::build_tree_objects()
 	} while (n_a != "endtree");
 	}
 	cin >> n_a;
-	Tsignal sigs[] = {SIGNALL(app::signal), SIGNALL(base_c2::signal), SIGNALL(base_c3::signal),SIGNALL(base_c4::signal),SIGNALL(base_c5::signal),SIGNALL(base_c6::signal) };
-	Thandler hans[] = {HANDLERR(app::handler), HANDLERR(base_c2::handler),HANDLERR(base_c3::handler), HANDLERR(base_c4::handler), HANDLERR(base_c5::handler), HANDLERR(base_c6::handler) };
+	Tsignal sigs[] = {SIGNALL(app::signal), SIGNALL(base_c2::signal),
+					SIGNALL(base_c3::signal),SIGNALL(base_c4::signal),
+					SIGNALL(base_c5::signal),SIGNALL(base_c6::signal) };
+	Thandler hans[] = {HANDLERR(app::handler), HANDLERR(base_c2::handler),
+					HANDLERR(base_c3::handler), HANDLERR(base_c4::handler),
+					HANDLERR(base_c5::handler), HANDLERR(base_c6::handler) };
 	while (n_a != "end_of_connections") {
 		cin >> n_b;
 		base* from = find_cord(n_a);
 		base* to = find_cord(n_b);
-		//from->set_connection((signal*)SIGNALL(from), to, (handler*)HANDLERR(to));
-		//from->set_connection(SIGNALL(from), to, HANDLERR(to));
-		//from->set_connection(SIGNALL(base_c2::signal), to, HANDLERR(base_c2::handler));
-		//from->set_connection((SIGNALL(base_c2::signal)), to, HANDLERR(base_c2::handler));
 		from->set_connection(sigs[from->get_n_class() - 1], to, hans[to->get_n_class() - 1]);
 		cin >> n_a;
 	}
@@ -78,7 +78,7 @@ void app::signal(std::string& mes)
 		mes += " (class: 1)";
 	}
 }
-void app::handler(std::string& mes)
+void app::handler(const std::string& mes)
 {
 	if (status)
 		cout << endl << "Signal to " << get_abs_cord() << " Text: " << mes;
@@ -86,8 +86,12 @@ void app::handler(std::string& mes)
 
 int app::exec_app()
 {
-	Tsignal sigs[] = { SIGNALL(app::signal), SIGNALL(base_c2::signal), SIGNALL(base_c3::signal),SIGNALL(base_c4::signal),SIGNALL(base_c5::signal),SIGNALL(base_c6::signal) };
-	Thandler hans[] = { HANDLERR(app::handler), HANDLERR(base_c2::handler),HANDLERR(base_c3::handler), HANDLERR(base_c4::handler), HANDLERR(base_c5::handler), HANDLERR(base_c6::handler) };
+	Tsignal sigs[] = { SIGNALL(app::signal), SIGNALL(base_c2::signal),
+					SIGNALL(base_c3::signal),SIGNALL(base_c4::signal),
+					SIGNALL(base_c5::signal),SIGNALL(base_c6::signal) };
+	Thandler hans[] = { HANDLERR(app::handler), HANDLERR(base_c2::handler),
+					HANDLERR(base_c3::handler), HANDLERR(base_c4::handler),
+					HANDLERR(base_c5::handler), HANDLERR(base_c6::handler) };
 	cout << "Object tree" << endl;
 	print();
 	std::string com, p,mes;

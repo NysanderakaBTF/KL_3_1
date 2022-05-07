@@ -5,12 +5,9 @@
 
 class base;
 typedef void (base::*Tsignal)(std::string&);
-//typedef void (base::*Thandler)(std::string& s);
-typedef void (base::*Thandler)(std::string& s);
+typedef void (base::*Thandler)(const std::string& s);
 #define SIGNALL(_signal) ((Tsignal) (&_signal))
 #define HANDLERR(_handler) ((Thandler) (&_handler))
-//#define SIGNALL(void(*a)(std::string)) ((signal) (&void))
-//#define HANDLERR(_handler) ((handler) (&_handler))
 using namespace std;
 class base
 {

@@ -9,7 +9,7 @@ void base_c5::signal(std::string& mes)
 		mes += " (class: 5)";
 	}
 }
-void base_c5::handler(std::string& mes)
+void base_c5::handler(const std::string& mes)
 {
 	if (status)
 	cout << endl << "Signal to " << get_abs_cord() << " Text: " << mes;
